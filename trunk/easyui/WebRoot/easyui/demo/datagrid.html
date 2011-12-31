@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Complex DataGrid - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery.easyui.min.js"></script>
+	<script>
+		$(function(){
+			$('#test').datagrid({
+				title:'我的数据列',//标头
+				iconCls:'icon-save',//标头前面的图片
+				width:700,
+				height:350,
+				nowrap: false,
+				striped: true,
+				collapsible:true,
+				url:'datagrid_data.json',//数据源
+				sortName: 'code',//以code列排序
+				sortOrder: 'desc',//排序,倒序
+				remoteSort: false, //远程排序？？？没明白
+				idField:'code',
+				frozenColumns:[[
+	                {field:'ck',checkbox:true},//多选列。
+	                {title:'code',field:'code',width:80,sortable:true}
+				]],
+				columns:[[
+			        {title:'基本信息',colspan:3},
+					{field:'opt',title:'Operation',width:100,align:'center', rowspan:2,
+						formatter:function(value,rec){
+							return '<span style="color:red">Edit Delete</span>';
+						}
+					}
+				],[//基本列属性
+					{field:'name',title:'Name',width:120},
+					{field:'addr',title:'Address',width:220,rowspan:2,sortable:true,
+						sorter:function(a,b){
+							return (a>b?1:-1);
+						}
+					},
+					{field:'col4',title:'Col41',width:150,rowspan:2}
+				]],
+				pagination:true,//分页
+				rownumbers:true,//行号 
+				toolbar:[{//工具栏
+					id:'btnadd',
+					text:'Add',
+					iconCls:'icon-add',
+					handler:function(){
+						$('#btnsave').linkbutton('enable');
+						alert('add')
+					}
+				},{
+					id:'btncut',
+					text:'Cut',
+					iconCls:'icon-cut',
+					handler:function(){
+						$('#btnsave').linkbutton('enable');
+						alert('cut')
+					}
+				},'-',{
+					id:'btnsave',
+					text:'Save',
+					disabled:true,//保存按钮不可用
+					iconCls:'icon-save',
+					handler:function(){
+						$('#btnsave').linkbutton('disable');//如果是enable，显示不是灰色
+						alert('save')
+					}
+				}]
+			});
+			var p = $('#test').datagrid('getPager');// 可以理解为分页对象？在点击刷新时，暂停，可以处理其他问题。
+			$(p).pagination({
+				onBeforeRefresh:function(){
+					alert('before refresh');
+				}
+			});
+		});
+		
+		//重新定义区域大小
+		function resize(){
+			$('#test').datagrid('resize', {
+				width:700,
+				height:400
+			});
+		}
+		
+		//获得选中项
+		function getSelected(){
+			var selected = $('#test').datagrid('getSelected');
+			if (selected){
+				alert(selected.code+":"+selected.name+":"+selected.addr+":"+selected.col4);
+			}
+		}
+		//获得先中项
+		function getSelections(){
+			var ids = [];
+			var rows = $('#test').datagrid('getSelections');
+			for(var i=0;i<rows.length;i++){
+				ids.push(rows[i].code);
+			}
+			alert(ids.join(':'));
+		}
+		
+		//清除选 中项
+		function clearSelections(){
+			$('#test').datagrid('clearSelections');
+		}
+		
+		//选中行
+		function selectRow(){
+			$('#test').datagrid('selectRow',2);
+		}
+		//选中记录
+		function selectRecord(){
+			$('#test').datagrid('selectRecord','002');
+		}
+		
+		//清除选中记录
+		function unselectRow(){
+			$('#test').datagrid('unselectRow',2);
+		}
+		//合并行 
+		function mergeCells(){
+			$('#test').datagrid('mergeCells',{
+				index:2,
+				field:'addr',
+				rowspan:2,
+				colspan:2
+			});
+		}
+	</script>
+</head>
+<body>
+	<h2>Complex DataGrid</h2>
+	<div class="demo-info">
+		<div class="demo-tip icon-tip"></div>
+		<div>Click the button to do actions with datagrid.</div>
+	</div>
+	
+	<div style="margin:10px 0;">
+		<a href="#" onclick="getSelected()">GetSelected</a>
+		<a href="#" onclick="getSelections()">GetSelections</a>
+		<a href="#" onclick="selectRow()">SelectRow</a>
+		<a href="#" onclick="selectRecord()">SelectRecord</a>
+		<a href="#" onclick="unselectRow()">UnselectRow</a>
+		<a href="#" onclick="clearSelections()">ClearSelections</a>
+		<a href="#" onclick="resize()">Resize</a>
+		<a href="#" onclick="mergeCells()">MergeCells</a>
+	</div>
+	
+	<table id="test"></table>
+	
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>DataGrid ContextMenu - jQuery EasyUI Demo</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery.easyui.min.js"></script>
+	<script>
+		$(function(){
+			$('#tt').datagrid({
+				url: 'datagrid_data2.json',//数据源
+				title: 'DataGrid - ContextMenu',//上下文标题
+				width: 700,//宽度
+				height: 'auto',//高度自适应
+				fitColumns: true,
+				columns:[[//列属性
+					{field:'itemid',title:'Item ID',width:80},
+					{field:'productid',title:'Product ID',width:120},
+					{field:'listprice',title:'List Price',width:80,align:'right'},
+					{field:'unitcost',title:'Unit Cost',width:80,align:'right'},
+					{field:'attr1',title:'Attribute',width:250},
+					{field:'status',title:'Status',width:60,align:'center'}
+				]],
+				onHeaderContextMenu: function(e, field){
+					e.preventDefault();
+					if (!$('#tmenu').length){//如果菜单不是原始长度,说明隐藏过其中的一些。因此创建菜单
+						createColumnMenu();
+					}
+					$('#tmenu').menu('show', {//菜单栏右键点击显示作用
+						left:e.pageX,
+						top:e.pageY
+					});
+				}
+			});
+		});
+		
+		function createColumnMenu(){
+			var tmenu = $('<div id="tmenu" style="width:100px;"></div>').appendTo('body');//在body标签后面添加一DIV标签.
+			var fields = $('#tt').datagrid('getColumnFields');//获得表tt中的所有列名
+			for(var i=0; i<fields.length; i++){
+			//alert(fields[i]);
+				$('<div iconCls="icon-ok"/>').html(fields[i]).appendTo(tmenu);//icon-ok此处为一个绿色的对号，后面跟上列名，添加到上面创建的菜单后面。
+			}
+			tmenu.menu({
+				onClick: function(item){
+					if (item.iconCls=='icon-ok'){
+						$('#tt').datagrid('hideColumn', item.text);
+						tmenu.menu('setIcon', {
+							target: item.target,
+							iconCls: 'icon-empty'//注意这个图标,实际不存在。表明找不到，显示为空
+						});
+					} else {
+						$('#tt').datagrid('showColumn', item.text);
+						tmenu.menu('setIcon', {
+							target: item.target,
+							iconCls: 'icon-ok'
+						});
+					}
+					
+					
+				}
+			});
+		}
+	</script>
+</head>
+<body>
+	<h2>DataGrid - ContextMenu</h2>
+	<div class="demo-info" style="margin-bottom:10px">
+		<div class="demo-tip icon-tip"></div>
+		<div>Right click the header of datagrid to show context menu.</div>
+	</div>
+	
+	<table id="tt"></table>
+	
+</body>
+</html>
