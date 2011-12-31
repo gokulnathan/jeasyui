@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * 连接辅助工具
+ * 连接辅助工具 
  * 
  * @author AB029789
  * 
