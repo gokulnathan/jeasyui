@@ -68,6 +68,7 @@ public class ConnUtils {
 	public static void main(String[] args) {
 		
 		System.err.println(getConn());
+		System.err.println("≤‚ ‘Ã·Ωª");
 	}
 
 }
