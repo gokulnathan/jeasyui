@@ -1,7 +1,7 @@
-<%@ page language="java" import="java.util.*" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 String path = request.getContextPath();
-String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"";
 %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -10,10 +10,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="keywords" content="jquery,ui,easy,easyui,web">
 	<meta name="description" content="easyui help you build your web page easily!">
-	<title>Build CRUD Application with edit form in expanded row details - jQuery EasyUI Demo</title>
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
-	<link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css">
+	<title>上面表格，点击到某行可编辑</title>
+	<link rel="stylesheet" type="text/css" href="../themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="../themes/icon.css">
+	<link rel="stylesheet" type="text/css" href="demo.css">
+	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="../jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="../js/datagrid-detailview.js"></script>
 	<style type="text/css">
 		form{
 			margin:0;
@@ -27,22 +30,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</style>
 	
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
-	<script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
-	<script type="text/javascript" src="http://www.jeasyui.com/easyui/datagrid-detailview.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$("#dg").datagrid({
 				view: detailview,
 				detailFormatter:function(index,row){
-					return "<div class="ddv"></div>";
+					return "<div class='ddv'></div>";
 				},
 				onExpandRow: function(index,row){
 					var ddv = $(this).datagrid("getRowDetail",index).find("div.ddv");
 					ddv.panel({
 						border:false,
 						cache:true,
-						href:"show_form.php?index="+index,
+						href:"show_form.jsp?index="+index,
 						onLoad:function(){
 							$("#dg").datagrid("fixDetailRowHeight",index);
 							$("#dg").datagrid("selectRow",index);
@@ -55,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		function saveItem(index){
 			var row = $("#dg").datagrid("getRows")[index];
-			var url = row.isNewRecord ? "save_user.php" : "update_user.php?id="+row.id;
+			var url = row.isNewRecord ? "<%=basePath%>/servlet/DataApplicationWithEditFormServlet?flag=addNew" : "<%=basePath%>/servlet/DataApplicationWithEditFormServlet?flag=edit&id="+row.id;
 			$("#dg").datagrid("getRowDetail",index).find("form").form("submit",{
 				url: url,
 				onSubmit: function(){
@@ -80,24 +80,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#dg").datagrid("collapseRow",index);
 			}
 		}
+		
+		//删除一条记录
 		function destroyItem(){
 			var row = $("#dg").datagrid("getSelected");
 			if (row){
-				$.messager.confirm("Confirm","Are you sure you want to remove this user?",function(r){
+				$.messager.confirm("Confirm","你确认要删除这条记录吗？",function(r){
 					if (r){
 						var index = $("#dg").datagrid("getRowIndex",row);
-						$.post("destroy_user.php",{id:row.id},function(){
+						$.post("<%=basePath%>/servlet/DataApplicationWithEditFormServlet?flag=remove",{id:row.id},function(){
 							$("#dg").datagrid("deleteRow",index);
 						});
 					}
 				});
 			}
 		}
+		
+		//新增一行
 		function newItem(){
 			$("#dg").datagrid("appendRow",{isNewRecord:true});
 			var index = $("#dg").datagrid("getRows").length - 1;
 			$("#dg").datagrid("expandRow", index);
-			$("#dg").datagrid("selectRow", index);
+		//	$("#dg").datagrid("selectRow", index);
 		}
 	</script>
 </head>
@@ -109,14 +113,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	
-	<table id="dg" title="My Users" style="width:700px;height:250px"
-			url="get_users.php"
+	<table id="dg" title="用户信息" style="width:700px;height:250px"
+			url="<%=basePath%>/servlet/DataApplicationWithEditFormServlet"
 			toolbar="#toolbar" pagination="true"
 			fitColumns="true" singleSelect="true">
 		<thead>
 			<tr>
-				<th field="firstname" width="50">First Name</th>
-				<th field="lastname" width="50">Last Name</th>
+				<th field="firstName" width="50">First Name</th>
+				<th field="lastName" width="50">Last Name</th>
 				<th field="phone" width="50">Phone</th>
 				<th field="email" width="50">Email</th>
 			</tr>
