@@ -17,18 +17,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="../jquery-1.7.1.min.js"></script>
 	<script type="text/javascript" src="../jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="../js/datagrid-detailview.js"></script>
-	<style type="text/css">
-		form{
-			margin:0;
-			padding:0;
-		}
-		.dv-table td{
-			border:0;
-		}
-		.dv-table input{
-			border:1px solid #ccc;
-		}
-	</style>
+	
 	
 	<script type="text/javascript">
 		$(function(){
