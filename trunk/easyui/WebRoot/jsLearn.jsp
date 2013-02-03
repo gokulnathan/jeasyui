@@ -286,16 +286,225 @@
 	/*  var d = new Date;
 	 alert(d.getDate());
 	 */
-	 
-	 //内置对象定义为“由ECMAScript实现提供的，独立于宿主环境的所有对象，在ECMAScript程序开始执行时出现”.这意味着开发者不必明确有实例化内置对象，它
-	 //已经被实例化了。只有两个内置对象Global和Math
-	 
-	 /*
-	 	这此URI方法encodeURI()、encodeURIComponent()、decodeURI()、decodeURIComponent()代替了BOM的escape()和unescape（）方法。URI
-	 	方法更可取，因为他们会对所有的Unicode符号编码，而BOM方法只能对ASCII符号正确编码。尽量避免使用escape()和unescape（）；
+
+	//内置对象定义为“由ECMAScript实现提供的，独立于宿主环境的所有对象，在ECMAScript程序开始执行时出现”.这意味着开发者不必明确有实例化内置对象，它
+	//已经被实例化了。只有两个内置对象Global和Math
+	/*
+		这此URI方法encodeURI()、encodeURIComponent()、decodeURI()、decodeURIComponent()代替了BOM的escape()和unescape（）方法。URI
+		方法更可取，因为他们会对所有的Unicode符号编码，而BOM方法只能对ASCII符号正确编码。尽量避免使用escape()和unescape（）；
+	 ***/
+	/* 
+	function showColor() {
+		alert(this.color);
+	}
+	
+	var oCar = new Object;
+	oCar.color = "red";
+	oCar.showColor = showColor;
+	
+	var oCar1 = new Object;
+	oCar1.color = "blue";
+	oCar1.showColor = showColor;
+	
+	oCar.showColor();
+	oCar1.showColor();
+	 */
+	/* 
+	 function showColor() {
+	 alert(this.color);
+	 }
+	
+	 function createCar(color) {
+	 var oCar = new Object;
+	 oCar.color = color;
+	 oCar.showColor = showColor;
+	 return oCar;//任何没有返回值的函数，默认返回undefined
+	 }
+	
+	 var oCar1 = createCar("red");
+	 var oCar2 = createCar("blue");
+	
+	 oCar1.showColor();
+	 oCar2.showColor();
+	 */
+
+	/**构造函数:会重复生成函数，为每个对象都创建独立的函数版本，也可以
+	用外部函数重写构造函数。同样的，语义上无任何意义，这就是原型方式的优势所在。
+	全用new运算符调用构造函数时，在执行第一行代码前先创建一个对象
+	只有this才能访问该对象。然后可以直接赋予this属性，默认情况下
+	是构造函数的返回值。
+	 **/
+	/*  
+	function Car(color) {
+		this.color = color;
+		this.showColor = function() {
+			alert(this.color);
+		};
+		//这里不必明确返回
+	}
+
+	var oCar1 = new Car("red");
+	oCar1.showColor();
+	 */
+
+	///////////////////原型方式/////////////////////////////////////
+	/*原型方式利用了对象的prototype属性，可把它看成新对象所依赖的原型。
+	调用new Car()时，原型的所有属性都被立刻赋予要创建的对象，意味着所有的Car实例存放的
+	都是指向showColor()函数的指针。从主义上讲，所有属性看起来都属于一个对象。
+	因此解决了前面两种方式的两个问题。使用此方法，还能用instanceof检查给定变量指向的对象的类型。
+	对象创建后才能改变属性的默认值，但是不是最坏的，真正的问题出现在属性指向的是对象，而
+	不是函数时，函数共享不会造成问题，但是对象却很少被多个实例共享的。
+	下例中，由于drivers是引用值，Car的两个实例都指向同一个数组。这意味着car1.drivers
+	添加的值，在car2.drivers中也可以看到。是否有合理的创建对象的方式呢?
+	答案是联合使用构造函数和原型的方式。
+	
+	 */
+	/* 
+	function Car() {
+	}
+	Car.prototype.color = "red";
+	Car.prototype.doors = 4;
+	Car.prototype.mpg = 23;
+	Car.prototype.drivers = new Array("Mike","Jerry");
+	Car.prototype.showColor = function() {
+	alert(this.color);
+	};
+	
+	var oCar1 = new Car();
+	oCar1.drivers.push("Tom");
+	oCar1.color = "blue";
+	var oCar2 = new Car();
+	alert(oCar1.drivers);
+	alert(oCar2.drivers);
+	alert(oCar2.color);
+	 */
+
+	//////////////////联合使用构造函数和原型的方式///////////////////////////
+	/**
+		要住很简单，用构造 函数定义对象的所有非函数属性，用原型的方式定义对象的函数属性（方法）。结果
+		所有的函数都只创建一次，而每个对象都有自己的对象属性实例。
+	 **/
+	/* 
+	function Car(color) {
+	this.color = color;
+	this.drivers = new Array("Mike","Jerry");
+	}
+	
+	Car.prototype.showColor = function() {
+	alert(this.color);
+	};
+	
+	var oCar1 = new Car("red");
+	var oCar2 = new Car("blue");
+	
+	oCar1.drivers.push("Tom");
+	alert(oCar1.drivers);
+	alert(oCar2.drivers);
+	 */
+
+	//对象冒充实现继承
+	/**
+		在这段代码中，为ClassA赋予了方法newMethod（函数名只是指向它的指针）。然后调用该方法
+		，传递给它的是ClassB构造函数的参数sColor。最后一行删除了对ClassA的引用，这样以后就不能
+		再 调用它。
+	 **/
+
+	/* 
+	function ClassA(sColor) {
+	this.sColor = sColor;
+	this.sayHi = function() {
+		alert(this.sColor);
+	};
+	}
+
+	function ClassB(sColor) {
+	this.newMethod = ClassA;
+	this.newMethod(sColor);
+	delete this.newMethod;
+	}
+	 */
+	//call() and apply()用来实现对象冒充继承方式的
+	//call()第一个参数的作用是用作this的对象。其他参数都直接传递给函数本身。
+	//使用继承和对象冒充修改以上方法
+	//这里，想让ClassA中的关键字this等于新创建的ClassB对象，因此this是第一个参数。第二个
+	//参数是实际传入的参数。
+	/*
+	 *只有超类中的参数顺序与子类中的参数顺序完全一致时才可以传递参数对象，如果不是，则创建一个单独数组
+	，按照正确的顺序旋转参数，此外还可以使用call（）方法。
+	 */
+	/* 
+	function ClassB(sColor) {
+		ClassA.call(this,sColor);
+	}
+	
+	function ClassB(sColor) {
+		//ClassA.apply(this,new Array(sColor));
+		ClassA.apply(this, arguments);
+	}
+	 */
+
+	//原型链
+	/****prototype对象是个模板，要实例化的对象都以这个模板为基础。prototype对象的任何属性和方法
+	都被传递给那个类的所有实例，利用这种功能来实现继承机制.
+	
+	调用ClassA的构造函数时，没有给它传递参数，这是原型链中的标准做法。要确保构造函数中没有任何参数。
+	 */
+/* 
+	function ClassA() {
+	}
+	ClassA.prototype.color = "red";
+	ClassA.prototype.sayColor = function() {
+		alert(this.color);
+	};
+
+	function ClassB() {
+
+	}
+
+	ClassB.prototype = new ClassA();
+
+	var objA = new ClassA();
+	objA.color = "red";
+	objA.sayColor();
+	var objB = new ClassB();
+	objB.color = "blue";
+	objB.sayColor();
+	alert(objB instanceof ClassB);//true
+	alert(objB instanceof ClassA);//true,对象冒充时不能使用instaceof这个方法判断
+ */
+	/**
+		原型链的弊端不支持多重继承。原型链会用另一类型的对象重写类的prototype属性。
+	 **/
+
+	/*
+	用对象冒充继承构造函数的属性，用原型链继承prototpye对象的方法。
 	 ***/
 	 
-	 
+	function ClassA(sColor) {
+		 this.color = sColor;
+	}
+	ClassA.prototype.sayColor = function() {
+		alert(this.color);
+	};
+	
+	function ClassB(sColor,sName) {
+		ClassA.call(this, sColor);//对象冒充构造函数的属性
+		this.name = sName;
+	}
+	ClassB.prototype = new ClassA();//用原型链继承方法
+	ClassB.prototype.sayName = function() {//此方法要放在上一句之后，否则会被重置，不起作用。
+		alert(this.name);
+	};
+	
+	var objA = new ClassA();
+	objA.color = "red";
+	objA.sayColor();
+	var objB = new ClassB();
+	objB.color = "blue";
+	objB.sayColor();
+	alert(objB instanceof ClassB);//true
+	alert(objB instanceof ClassA);//true,对象冒充时不能使用instaceof这个方法判断
+	
 	 
 </script>
 </head>
