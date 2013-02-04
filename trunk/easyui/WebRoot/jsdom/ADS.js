@@ -46,6 +46,27 @@
 
 	function addEvent(node, type, listener) {
 
+		if(!isCompatible()) {
+			return false;
+		}
+		if(!(node = $(node))) {
+			return false;
+		}
+		if(node.addEventListener) {
+			//w3c方法
+			node.addEventListener(type,listener,false);
+			
+			return false;
+		} else if(node.attachEvent) {
+			//MISE方法
+			node['e' + type + listener] = listener;
+			note[type + listener] =  function () {
+				node['e' + type + listener](window.event);
+			};
+			node.atachEvent('on' + type, node[type+listener]);
+			return true;
+		}
+		//两种方法都不具备，返回false
 	}
 	;
 	window['ADS']['addEvent'] = addEvent;
