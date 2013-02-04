@@ -71,7 +71,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 	}
 
 	/**
-	 * ±à¼­Ä³¸öÓÃ»§ÐÅÏ¢
+	 * ï¿½à¼­Ä³ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½Ï¢
 	 * 
 	 * @param id
 	 * @param firstName
@@ -84,7 +84,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 			String phone, String email, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
 
-		// »ñµÃÁ¬½Ó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Connection conn = ConnUtils.getConn();
 
 		PreparedStatement pstmt = null;
@@ -94,7 +94,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 		updateUserSql
 				.append(" UPDATE USERS SET FIRSTNAME=?, LASTNAME=?, PHONE=?, EMAIL=? WHERE ID=?");
 
-		// String returnFlag = "0|¸üÐÂÊ§°Ü";
+		// String returnFlag = "0|ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½";
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -115,13 +115,13 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 			int n = pstmt.executeUpdate();
 
 			/*
-			 * if(n == 1) {//±íÊ¾ ¸üÐÂ³É¹¦
+			 * if(n == 1) {//ï¿½ï¿½Ê¾ ï¿½ï¿½ï¿½Â³É¹ï¿½
 			 * 
-			 * returnFlag = "1|¸üÐÂ³É¹¦";
+			 * returnFlag = "1|ï¿½ï¿½ï¿½Â³É¹ï¿½";
 			 * 
 			 * } else {
 			 * 
-			 * returnFlag = "0|¸üÐÂÊ§°Ü";
+			 * returnFlag = "0|ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½";
 			 * 
 			 * }
 			 */
@@ -130,17 +130,17 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 				map.put("success", "true");
 
-				map.put("msg", "¸üÐÂ³É¹¦ ");
+				map.put("msg", "ï¿½ï¿½ï¿½Â³É¹ï¿½ ");
 
 			} else {
 
 				map.put("success", "false");
 
-				map.put("msg", "¸üÐÂÊ§°Ü ");
+				map.put("msg", "ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ ");
 
 			}
 
-			// response.setContentType("text/json;charset=UTF-8");//·ÀÖ¹³öÏÖÖÐÎÄÂÒÂë
+			// response.setContentType("text/json;charset=UTF-8");//ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 			String returnFlag = JSONObject.fromObject(map).toString();
 
@@ -152,8 +152,8 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 			out.close();
 
-			System.err.println("¸üÐÂµÄ¼ÇÂ¼ÌõÊýÎª£º[" + n + "]Ìõ£¬SQLÎª["
-					+ updateUserSql.toString() + "]£¬²ÎÊýÎªid[" + id
+			System.err.println("ï¿½ï¿½ï¿½ÂµÄ¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½[" + n + "]ï¿½ï¿½ï¿½ï¿½SQLÎª["
+					+ updateUserSql.toString() + "]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªid[" + id
 					+ "],firstName:[" + firstName + "],lastName:[" + lastName
 					+ "],phone:[" + phone + "],email:[" + email + "]");
 
@@ -187,13 +187,13 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setCharacterEncoding("UTF-8");// ÉèÖÃÇëÇó±àÂë¸ñÊ½
+		request.setCharacterEncoding("UTF-8");// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 
 		response.setCharacterEncoding("UTF-8");
 
-		response.setHeader("Cache-Control", "no-cache");// ·ÀÖ¹»º´æ
+		response.setHeader("Cache-Control", "no-cache");// ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½
 
-		response.setContentType("text/json;charset=UTF-8");// ·ÀÖ¹³öÏÖÖÐÎÄÂÒÂë
+		response.setContentType("text/json;charset=UTF-8");// ï¿½ï¿½Ö¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		String flag = request.getParameter("flag");
 
@@ -239,7 +239,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 	}
 
 	/**
-	 * Ìí¼ÓÓÃ»§
+	 * ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
 	 * 
 	 * @param firstName
 	 * @param lastName
@@ -252,7 +252,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 	private void addUser(String firstName, String lastName, String phone,
 			String email, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		// »ñµÃÁ¬½Ó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Connection conn = ConnUtils.getConn();
 
 		PreparedStatement pstmt = null;
@@ -282,13 +282,13 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 				map.put("success", "true");
 
-				map.put("msg", "Ìí¼Ó³É¹¦ ");
+				map.put("msg", "ï¿½ï¿½Ó³É¹ï¿½ ");
 
 			} else {
 
 				map.put("success", "false");
 
-				map.put("msg", "Ìí¼ÓÊ§°Ü ");
+				map.put("msg", "ï¿½ï¿½ï¿½Ê§ï¿½ï¿½ ");
 
 			}
 
@@ -302,8 +302,8 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 			out.close();
 
-			System.err.println("Ìí¼ÓµÄ¼ÇÂ¼ÌõÊýÎª£º[" + n + "]Ìõ£¬SQLÎª["
-					+ addUserSql.toString() + "]£¬²ÎÊýÎªifirstName:[" + firstName
+			System.err.println("ï¿½ï¿½ÓµÄ¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½[" + n + "]ï¿½ï¿½ï¿½ï¿½SQLÎª["
+					+ addUserSql.toString() + "]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÎªifirstName:[" + firstName
 					+ "],lastName:[" + lastName + "],phone:[" + phone
 					+ "],email:[" + email + "]");
 
@@ -321,7 +321,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 	private void deleteUser(String id, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		// »ñµÃÁ¬½Ó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Connection conn = ConnUtils.getConn();
 
 		PreparedStatement pstmt = null;
@@ -344,13 +344,13 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 				map.put("success", "true");
 
-				map.put("msg", "É¾³ý³É¹¦ ");
+				map.put("msg", "É¾ï¿½ï¿½É¹ï¿½ ");
 
 			} else {
 
 				map.put("success", "false");
 
-				map.put("msg", "É¾³ý Ê§°Ü ");
+				map.put("msg", "É¾ï¿½ï¿½ Ê§ï¿½ï¿½ ");
 
 			}
 
@@ -364,8 +364,8 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 			out.close();
 
-			System.err.println("É¾³ýµÄ¼ÇÂ¼ÌõÊýÎª£º[" + n + "]Ìõ£¬SQLÎª["
-					+ deleteUserSql.toString() + "]£¬²ÎÊýÎªid[" + id + "]");
+			System.err.println("É¾ï¿½ï¿½Ä¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½[" + n + "]ï¿½ï¿½ï¿½ï¿½SQLÎª["
+					+ deleteUserSql.toString() + "]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªid[" + id + "]");
 
 		} catch (SQLException e) {
 
@@ -380,7 +380,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 	}
 
 	/**
-	 * ²éÑ¯ËùÓÐÓÃ»§
+	 * ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½
 	 * 
 	 * @param request
 	 * @param response
@@ -388,10 +388,10 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 	 */
 	private void searchAllUsers(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-		// »ñµÃÁ¬½Ó
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		Connection conn = ConnUtils.getConn();
 
-		// Ò³Âë
+		// Ò³ï¿½ï¿½
 		String pageCount = request.getParameter("page");
 
 		long page = (pageCount == null || "".equals(pageCount)) ? 1 : Long
@@ -399,11 +399,11 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 		String rowsCount = request.getParameter("rows");
 
-		// ÐÐÊý
+		// ï¿½ï¿½ï¿½ï¿½
 		long rows = (rowsCount == null || "".equals(rowsCount)) ? 10 : Long
 				.valueOf(rowsCount);
 
-		// ÆðÊ¼¼ÇÂ¼Êý£¬±ÈÈçµÚÒ»Ò³£¬´Ó0 ¿ªÊ¼£¬µÚ¶þÒ³£¬´Ó10¿ªÊ¼
+		// ï¿½ï¿½Ê¼ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»Ò³ï¿½ï¿½ï¿½ï¿½0 ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ú¶ï¿½Ò³ï¿½ï¿½ï¿½ï¿½10ï¿½ï¿½Ê¼
 		long offSet = (page - 1) * rows;
 
 		Map<String, Object> returnMap = new HashMap<String, Object>();
@@ -412,14 +412,14 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 		ResultSet rs = null;
 
-		// ²éÑ¯ËùÓÐµÄ¼ÇÂ¼ÌõÊýSQL
+		// ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ÐµÄ¼ï¿½Â¼ï¿½ï¿½ï¿½ï¿½SQL
 		StringBuilder allCountSql = new StringBuilder("  ");
 
 		allCountSql.append(" SELECT COUNT(*) FROM USERS ");
 
 		long allCount = 0;
 
-		// ²éÑ¯Ä³Ò³µÄ¼ÇÂ¼,¸ù¾ÝÒ³ÂëºÍÃ¿Ò³¼ÇÂ¼Êý,È·¶¨Ó¦¸Ã²éµÄÆðÊ¼¼ÇÂ¼ºÍÖÕÖ¹¼ÇÂ¼
+		// ï¿½ï¿½Ñ¯Ä³Ò³ï¿½Ä¼ï¿½Â¼,ï¿½ï¿½ï¿½Ò³ï¿½ï¿½ï¿½Ã¿Ò³ï¿½ï¿½Â¼ï¿½ï¿½,È·ï¿½ï¿½Ó¦ï¿½Ã²ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ï¿½Ö¹ï¿½ï¿½Â¼
 		StringBuilder searchSql = new StringBuilder("  ");
 
 		searchSql
@@ -475,11 +475,11 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 			response.setContentType("text/html");
 
-			response.setCharacterEncoding("UTF-8");// ÉèÖÃ±àÂë¸ñÊ½
+			response.setCharacterEncoding("UTF-8");// ï¿½ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½Ê½
 
 			PrintWriter out = response.getWriter();
 
-			out.println(returnString);// ÊäÈëJSON´®
+			out.println(returnString);// ï¿½ï¿½ï¿½ï¿½JSONï¿½ï¿½
 
 			out.flush();
 
@@ -491,7 +491,7 @@ public class DataApplicationWithEditFormServlet extends HttpServlet {
 
 		} finally {
 
-			ConnUtils.releaseConn(rs, pstmt, conn);// ¹Ø±ÕÁ¬½Ó
+			ConnUtils.releaseConn(rs, pstmt, conn);// ï¿½Ø±ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		}
 
