@@ -480,6 +480,7 @@
 	用对象冒充继承构造函数的属性，用原型链继承prototpye对象的方法。
 	 ***/
 	 
+	/*
 	function ClassA(sColor) {
 		 this.color = sColor;
 	}
@@ -504,12 +505,17 @@
 	objB.sayColor();
 	alert(objB instanceof ClassB);//true
 	alert(objB instanceof ClassA);//true,对象冒充时不能使用instaceof这个方法判断
+	*/
 	
+	//
+	var oHtml = document.documentElement;
+	alert(oHtml.childNodes[0].name);
 	 
 </script>
 </head>
 
 <body>
+<form action="" name="form"></form>
 	This is my JSP page.
 	<br>
 </body>
