@@ -56,7 +56,8 @@
 			//w3c方法
 			node.addEventListener(type,listener,false);
 			
-			return false;
+			return true;
+			
 		} else if(node.attachEvent) {
 			//MISE方法
 			node['e' + type + listener] = listener;
