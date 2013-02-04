@@ -68,6 +68,8 @@
 			return true;
 		}
 		//两种方法都不具备，返回false
+		return false;
+		
 	}
 	;
 	window['ADS']['addEvent'] = addEvent;
