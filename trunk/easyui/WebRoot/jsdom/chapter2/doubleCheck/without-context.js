@@ -3,7 +3,7 @@ function doubleCheck() {
 }
 doubleCheck.prototype.sayGoodbye = function() {
     return confirm(this.message);
-}
+};
 initPage() {    
     var clickedLink = new doubleCheck();
     var links = document.getElementsByTagName('a');
