@@ -59,7 +59,77 @@
 		return domCode;
 	}
 	
+	//遍历某节点的属性
 	function processAttribute(tabCount, refParent) {
+		//跳过文本节点
+		if(this.nodeType != ADS.node.ATTRIBUTE_NODE) {
+			return false;
+		}
+		
+		//取得属性值
+		var attrValue = (this.nodeValue ? encode(this.nodeValue.trim()) : '');
+		
+		if(this.nodeName == 'cssText') {
+			alert('true');
+		}
+		
+		//如果没有值则返回
+		if(!attrValue) {
+			return ;
+		}
+		
+		//确定缩进的级别
+		var tabs = (tabCount ? '\t'.repeat(parseInt(tabCount)) : '');
+		//根据nodeName进行判断，除了class和style需要特殊注意以外，所有类型都可以按常规来处理
+		switch(this.nodeName) {
+		
+		default :
+			if(this.nodeName.substring(0,2) == 'on'){
+				//如果属性名称以'on'开头，说明是一个嵌入式事件属性，也就需要重新创建一个给该属性赋值的函数
+				domCode += tabs + refParent + '.' + this.nodeName + ' = function(){'+attrValue+'}\n';
+			} else {
+				//对于其他的情况，则使用setAttribute
+				domCode += tabs + refParent + '.setAttribute(\'' + this.nodeName + '\', ' + checkForVariable(attrValue) + ');\n';
+			}
+				break;
+		case 'class' :
+			//使用className属性为class赋值
+			domCode += tabs + refParent + '.className=' + checkForVariable(attrValue) + ';\n';
+			break;
+		case 'style' :
+			//使用正则表达式基于;和邻近的空格符来分割样式的属性
+			var style = attrValue.split(/\s*;\s*/);
+			
+			if(style) {
+				for ( var pair in style) {
+					if(!style[pair]) {
+						continue;
+					}
+					//使用正则表达式基于;和邻近的空格符来分割每对样式属性
+					var prop = style[pair].split(/\s*:\s*/);
+					if(!prop[1]) {
+						continue;
+					}
+					
+					//将css-property格式的CSS属性转换为cssProperty格式
+					prop[0] = ADS.camelize(prop[0]);
+					
+					var propValue = checkForVariable(prop[1]);
+					if(prop[0] == 'float') {
+						//float 保留字，属于特殊情况。cssFloat是标准的属性。styleFloat是IE使用的属性
+						domCode += tabs + refParent + '.style.cssFloat = ' + propValue + ';\n';
+						
+						domCode += tabs + refParent + '.style.styleFloat = ' + propValue + ';\n';
+						
+					} else {
+						
+						domCode += tabs + refParent + '.style.' + prop[0] + '=' + propValue + ';\n';
+						
+					}
+				}
+			}
+			break;
+		}
 		
 	}
 	
