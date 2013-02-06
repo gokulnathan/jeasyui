@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+<title>Override the alert() method</title>
+
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+<!-- <script type="text/javascript" src="override.js"></script> -->
+<script type="text/javascript">
+	/*
+	function myConstructor(message) {
+		alert(message);
+		this.message = message;
+	}	
+	var myObject = new myConstructor("Instantiating Object");
+	*/
+	//创建一个对象实例
+	var myConstructor = function(message) {
+		this.myMessage = message;
+		//私有属性
+		var separator = "-";
+		var myOwner = this;
+		//私有方法
+		function alertMessage() {
+		
+			alert(myOwner.myMessage);
+			
+		}
+		
+		//在实例化时显示信息
+		alertMessage();	
+		
+		/*特权方法(公有方法)，指的是在构造函数的作用域中，
+		用this关键字定义的方法,可以在外部访问，同时拥有通过作用域链访问内部私有属性separator的权限。
+		*/
+		this.appendToMessage = function(string) {
+			this.myMessage += separator + string;
+			alertMessage();
+		}
+		
+	}
+	
+	//公有方法
+	myConstructor.prototype.clearMessage = function(string) {
+		this.myMessage = "";
+	}	
+	//添加一个静态属性
+	myConstructor.name = "Jerry";
+	
+	//静态方法
+	myConstructor.alertName = function() {
+		alert(this.name);
+	}
+	
+	var secConstructor = new myConstructor("tom and jerry");
+	secConstructor.appendToMessage("this is a test!");
+	
+	/**
+		1、由于私有和特权成员在函数内部，因此它们会被带到函数的每个实例中。(即构造函数的每个实例都包含同样的私有成员和特权成员的副本，因而实例越多，占用内存越多)
+		2、公有的原型成员是对象蓝图的一部分，适用于new关键字实例化的该对象的每个实例。
+		3、静态成员只适用于对象的一个特殊实例。(这个实例就是作为Function对象实例的构造函数本身，太绕，，就是某一个具体实例)
+		
+	**/
+	
+	
+	
+</script>
+</head>
+
+<body>
+
+</body>
+</html>
