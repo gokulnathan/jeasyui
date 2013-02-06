@@ -197,160 +197,136 @@
 	}
 	window["ADS"]["toggleDisplay"] = toggleDisplay; 
 	
-	//登记锚点注册器
-	function registerListener(anchor, i) {
-		ADS.addEvent(anchor, 'click',function(){
+	//函数绑定，修改环境
+	function bindFunction(obj, func) {
+		return function() {
+			func.apply(obj, arguments);
+		};
+	}
+	window['ADS']['bindFunction'] = bindFunction;
+	
+	//获得浏览器窗口尺寸
+	function getBrowserWindowSize() {
+		var de = document.documentElement;
+		return {
+			"width" : (window.innerWidth || (de && de.clientWidth) || document.body.clientWidth),
+			"height" : (window.innerHeight || (de && de.clientHeight) || document.body.clientHeight)
 			
-			alert("my test id is anchor" + i);
-		});
-	}
-	
-	function initAnchors(W3CEvent) {
-		for ( var int = 0; int < 3; int++) {
-			var anchor = document.getElementById("anchor" + i);
-			registerListener(anchor, i);
-		}
-	}
-	
-	ADS.addEvent(window, 'load',initAnchors);
-	
-	function registerMultiStateAnchorListeners(anchor, anchorImage, path, extension){
-		//载入鼠标悬停状态的图像
-		//载入过程与其余的脚本
-		//异步进行
-		var imageMouseOver = new Image();
-		imageMouseOver.src = path + '-over' + extension;
-		
-		//当鼠标悬停时变换图像的源文件
-		ADS.addEvent(anchor, 'mouseover', function(W3CEvent){
-			anchorImage.src = imageMouseOver.src;
-		});
-		
-		//当鼠标移出时将图像变换为原始文件
-		ADS.addEvent(anchor, 'mouseout', function(W3CEvent) {
-			anchorImage.src = path + extension;
-		});
-		
-		//载入鼠标按下时的图像
-		var imageMouseDown = new Image();
-		imageMouseDown.src = path + '-down' + extension;
-		
-		//鼠标按下时将图像变换为按下状态的源文件
-		ADS.addEvent(anchor, 'mousedown', function(W3CEvent) {
-			anchorImage.src = imageMouseDown.src;
-		});
-		
-		//当鼠标放开时图像变换为原始文件
-		ADS.addEvent(anchor, 'mouseup', function(W3CEvent) {
-			anchorImage.src = path + extension;
-		});
+		};
 	};
+	window['ADS']['getBrowserWindowSize'] = getBrowserWindowSize;
 	
-	function initMultiStateAnchors(W3CEvent) {
-		//查找页面中所有的锚
-		var anchors = ADS.getElementsByClassName('multiStateAnchor', 'a', document);
-		//遍历所有的锚元素
-		for ( var int = 0; int < anchors.length; int++) {
-			//找到锚中的第一个子图像元素
-			var anchorImage = anchors[i].getElementsByTagName('img')[0];
+	//下面这个myLogger当作一个构造函数
+	function myLogger(id) {
+		
+		id = id ||'ADSLogWindow';
+		//私有属性
+		var logWindow = null;
+		//私有方法
+		var createWindow = function () {
+			//取得新窗口在浏览器中居中放置时的左上角位置
+			var  browserWindowSize = ADS.getBrowserWindowSize();
+			var top = ((browserWindowSize.height - 200)/2) || 0;
+			var left = ((browserWindowSize.width - 200)/2) || 0;
 			
-			if(anchorImage) {
-				//如果存在图像元素，解析其源路径
-				var extensionIndex = anchorImage.src.lastIndexOf(".");//扩展名前面的.所在的位置
-				var path = anchorImage.src.substr(0, extensionIndex);//路径
-				var extension = anchorImage.src.substring(extensionIndex, anchorImage.src.length);//扩展名
-				//添加各种鼠标处理程序，同时预先加载图像
-				registerMultiStateAnchorListeners(anchor[i], anchorImage, path, extension);
+			//创建作为日志窗口的DOM节点
+			//使用受保护的logWindow属性维护引用
+			logWindow = document.createElement("UL");
+			//指定ID值， 以便必要时在DOM树中能够识别
+			logWindow.setAttribute("id",id);
+			
+			//在屏幕居中定位日志窗口
+			logWindow.style.position = 'absolute';
+			logWindow.style.top = top + "px";
+			logWindow.style.left = left + "px";
+			
+			//设置固定的大小并允许窗口内容滚动
+			logWindow.style.width = "200px";
+			logWindow.style.height = "200px";
+			logWindow.style.overflow = "scroll";
+			
+			//添加一些样式以美化外观
+			logWindow.style.padding = "0";
+			logWindow.style.margin = "0";
+			logWindow.style.border = "1px solid black";
+			logWindow.style.backgroundColor = "white";
+			logWindow.style.listStyle = "none";
+			logWindow.style.font = "10px/10px Verdana, Tahoma, Sans";
+			
+			//将其添加到文档主体中
+			document.body.appendChild(logWindow);
+			
+			
+		};
+		
+		//特权方法，公有方法
+		this.writeRaw = function(message) {
+			//如果初始窗口不存在，则创建
+			if(!logWindow) {
+				
+				createWindow();
 				
 			}
-		}
+			
+			//创建列表项并适当地添加样式
+			var li = document.createElement("LI");
+			li.style.padding = "2px";
+			li.style.border = "0";
+			li.style.borderBottom = "1px dotted black";
+			li.style.margin = "0";
+			li.style.color = "#000";
+			li.style.font = "9px/9px Verdana, Tahoma, Sans";
+			//为日志节点添加 信息
+			if(typeof message == "undefined") {
+				li.appendChild(document.createTextNode("Message was undefined"));
+			} else if (typeof li.innerHTML != undefined) {
+				li.innerHTML = message;
+			} else {
+				li.appendChild(document.createTextNode(message));
+			}
+			
+			//将这个条目添加到日志窗口
+			logWindow.appendChild(li);
+			
+			return true;
+		};
+		
 	}
 	
-	//当文档载入完成时修改具有特定标记的锚
-	ADS.addEvent(window, 'load', initMultiStateAnchors);
-	
-	//定义自己的节点类型
-	/*
-	 * 这里的node采用了小写类型，如果以后IE支持了Node对象，仍可以使用自己
-	 * 定义的。if(node.nodeType == ADS.node.ELEMENT_NODE){};
-	 */
-	window['ADS']['node'] {
-			ELEMENT_NODE :1,
-			ATTRIBUTE_NODE :2,
-			TEXT_NODE :3,
-			CDATA_SECTION_NODE :4,
-			ENTITY_REFERENCE_NODE :5,
-			ENTITY_NODE :6,
-			PROCESSING_INSTRUCTION_NODE :7,
-			COMMENT_NODE :8,
-			DOCUMENT_NODE :9,
-			DOCUMENT_TYPE_NODE :10,
-			DOCUMENT_FRAGMENT_NODE :11,
-			NOTATION_NODE :12
+	//公有方法。
+	myLogger.prototype = {
+			write:function(message){
+				//警告message 为空值
+				if(typeof message =="string" && message.length == 0 ) {
+					return this.writeRaw("ADS.log: null message");
+				}
+				
+				//如果message不是字符串，尝试调用toString（）方法,如果不存在，则记录对象类型
+				if(typeof message != "string") {
+					if(message.toString) {
+						return this.writeRaw(message.toString());
+					} else {
+						return this.writeRaw(typeof message);
+					}
+				}
+				
+				//转换< and >，以便.innerHTML不会将message作为HTML进行解析
+				message = message.replace(/</g,"&lt;").replace(/>/g,"&gt;");
+				return this.writeRaw(message);
+			},
 			
+			//向日志窗口写入一个标量
+			header:function(message) {
+				message = '<span style="color:white;background-color:black;font-weigh:bold;padding:0px 5px;">'
+					+ message + '</span>';
+				return this.writeRaw(message);
+			}
 	};
 	
-	//遍历所有的节点
-	function walkElementsLinear(func, node) {
-		var root = node || window.document;
-		var nodes = root.getElementsByTagName("*");
-		for ( var int = 0; int < nodes.length; int++) {
-			//每个节点循环调用传入的方法，对象冒充，继承机制原理。
-			func.call(node[i]);
-		}
+	if(!window.ADS) {
+		window['ADS'] = {};
 	}
 	
-	//递归遍历
-	function walkTheDOMRecursive(func,node,depth,returnedFromParent) {
-		var root = root || window.document;
-		var returnedFromParent = func.call(root,depth++,returnedFromParent);
-		var node = root.firstChild;
-		while(node) {
-			walkTheDOMRecursive(func, node,depth, returnedFromParent);
-			node = node.nextSibling;
-		}
-	}
-	
-	//遍历每个节点的属性
-	function walkTheDOMWithAttributes(node,func,depth,returnedFromParent) {
-		var root = root || window.document;
-		returnedFromParent = func(root,depth++,returnedFromParent);
-		if(root.attributes) {
-			for ( var int = 0; int < root.attributes.length; int++) {
-				walkTheDOMWithAttributes(root.attribute[i], func, depth - 1, returnedFromParent);
-			}
-		}
-		
-		if(root.nodeType != ADS.node.ATTRIBUTES) {
-			node = root.firstChild;
-			while(node) {
-				walkTheDOMWithAttributes(node, func, depth, returnedFromParent);
-				node = node.nextSibling;
-			}
-		}
-	}
-	
-	//把word-word转换为wordWord
-	function camelize(s) {
-		return s.replace(/-(\w)/g, function(strMatch, p1) {
-			return p1.toUpperCase();
-		});
-	}
-	window['ADS']['camelize'] = camelize;
+	window['ADS']['log'] = new myLogger();//当作构造函数调用，生成对应实例。
 	
 })();
-
-//在现在的ADS空间外面，添加两个方法
-//重复一个字符串
-if(!String.repeat) {
-	String.prototype.repeat = function(m) {
-		return new Array(m + 1).join(this);
-	}
-}
-
-//清除结尾和开头时的空白字符
-if(!String.trim) {
-	String.prototype.trim = function() {
-		return this.replace(/^\s + |\s+$/g,'');
-	}
-}
