@@ -33,10 +33,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    		<li class="findme">Bar</li>
    	</ol>
    </div>
+   
   </body>
   <script type="text/javascript">
+  	/*
 	var found = ADS.getElementsByClassName("findme","*",document);
 	alert(found);
+	*/
+	var va = "outside"; 
+	function myFunction () {
+		var va = "inside";
+		alert(va);
+	}
+	myFunction();
+	alert(va);
 </script>
 </html>
 

@@ -95,33 +95,53 @@
 	;
 	window['ADS']['removeEvent'] = removeEvent;
 
-	function getElementsByClassName(className, tag, parent) {
-
-	}
-	;
-	window['ADS']['getElementsByClassName'] = getElementsByClassName;
-
-	function toggleDisplay(node, value) {
-
-	}
-	;
-	window['ADS']['toggleDisplay'] = toggleDisplay;
-
+	//在某个节点之后插入
 	function insertAfter(node, referenceNode) {
-
+		if(!(node = $(node))) {
+			return false;
+		}
+		if(!(referenceNode = $(referenceNode))) {
+			return false;
+		}
+		return referenceNode.parentNode.insertBefore(node,referenceNode.nextSibling);
 	}
 	window['ADS']['insertAfter'] = insertAfter;
 
+	//移除子节点
 	function removeChildren(parent) {
-
+		if(!(parent = $(parent))) {
+			return false;
+		}
+		//当存在该节点时，删除该子节点
+		while(parent.firstChild) {
+			parent.firstChild.parentNode.removeChild(parent.firstChild);
+		}
+		//返回父元素，以便实现方法连缀
+		return parent;
 	}
 	;
 	window['ADS']['removeChildren'] = removeChildren;
 
+	//添加节点
 	function prependChild(parent, newChild) {
-
-	}
-	;
+		if(!(parent = $(parent))) {
+			return false;
+		}
+		if(!(newChild = $(newChild))) {
+			return false;
+		}
+		
+		if(parent.firstChild) {
+			//如果存在一个子节点，则在此子节点之前插入
+			parent.insertBefore(newChild,parent.firstChild);
+		} else {
+			//如果没有子节点，直接添加
+			parent.appendChild(newChild);
+		}
+		//再返回父元素，以便实现方法连缀
+		return parent;
+	};
+	
 	window['ADS']['prependChild'] = prependChild;
 
 	function exampleLibraryMethod(obj) {
@@ -163,6 +183,7 @@
 	
 	window['ADS']['getElementsByClassName'] = getElementsByClassName;
 	
+	//隐藏或显示效果
 	function toggleDisplay(node ,value) {
 		if(!(node = $(node))) {
 			return false;
@@ -175,5 +196,77 @@
 		return true;
 	}
 	window["ADS"]["toggleDisplay"] = toggleDisplay; 
+	
+	//登记锚点注册器
+	function registerListener(anchor, i) {
+		ADS.addEvent(anchor, 'click',function(){
+			
+			alert("my test id is anchor" + i);
+		});
+	}
+	
+	function initAnchors(W3CEvent) {
+		for ( var int = 0; int < 3; int++) {
+			var anchor = document.getElementById("anchor" + i);
+			registerListener(anchor, i);
+		}
+	}
+	
+	ADS.addEvent(window, 'load',initAnchors);
+	
+	function registerMultiStateAnchorListeners(anchor, anchorImage, path, extension){
+		//载入鼠标悬停状态的图像
+		//载入过程与其余的脚本
+		//异步进行
+		var imageMouseOver = new Image();
+		imageMouseOver.src = path + '-over' + extension;
+		
+		//当鼠标悬停时变换图像的源文件
+		ADS.addEvent(anchor, 'mouseover', function(W3CEvent){
+			anchorImage.src = imageMouseOver.src;
+		});
+		
+		//当鼠标移出时将图像变换为原始文件
+		ADS.addEvent(anchor, 'mouseout', function(W3CEvent) {
+			anchorImage.src = path + extension;
+		});
+		
+		//载入鼠标按下时的图像
+		var imageMouseDown = new Image();
+		imageMouseDown.src = path + '-down' + extension;
+		
+		//鼠标按下时将图像变换为按下状态的源文件
+		ADS.addEvent(anchor, 'mousedown', function(W3CEvent) {
+			anchorImage.src = imageMouseDown.src;
+		});
+		
+		//当鼠标放开时图像变换为原始文件
+		ADS.addEvent(anchor, 'mouseup', function(W3CEvent) {
+			anchorImage.src = path + extension;
+		});
+	};
+	
+	function initMultiStateAnchors(W3CEvent) {
+		//查找页面中所有的锚
+		var anchors = ADS.getElementsByClassName('multiStateAnchor', 'a', document);
+		//遍历所有的锚元素
+		for ( var int = 0; int < anchors.length; int++) {
+			//找到锚中的第一个子图像元素
+			var anchorImage = anchors[i].getElementsByTagName('img')[0];
+			
+			if(anchorImage) {
+				//如果存在图像元素，解析其源路径
+				var extensionIndex = anchorImage.src.lastIndexOf(".");//扩展名前面的.所在的位置
+				var path = anchorImage.src.substr(0, extensionIndex);//路径
+				var extension = anchorImage.src.substring(extensionIndex, anchorImage.src.length);//扩展名
+				//添加各种鼠标处理程序，同时预先加载图像
+				registerMultiStateAnchorListeners(anchor[i], anchorImage, path, extension);
+				
+			}
+		}
+	}
+	
+	//当文档载入完成时修改具有特定标记的锚
+	ADS.addEvent(window, 'load', initMultiStateAnchors);
 	
 })();
