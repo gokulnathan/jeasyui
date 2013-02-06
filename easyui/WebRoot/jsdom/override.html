@@ -21,6 +21,7 @@
 	}	
 	var myObject = new myConstructor("Instantiating Object");
 	*/
+	/*
 	//创建一个对象实例
 	var myConstructor = function(message) {
 		this.myMessage = message;
@@ -37,9 +38,8 @@
 		//在实例化时显示信息
 		alertMessage();	
 		
-		/*特权方法(公有方法)，指的是在构造函数的作用域中，
-		用this关键字定义的方法,可以在外部访问，同时拥有通过作用域链访问内部私有属性separator的权限。
-		*/
+		//特权方法(公有方法)，指的是在构造函数的作用域中，
+		//用this关键字定义的方法,可以在外部访问，同时拥有通过作用域链访问内部私有属性separator的权限。
 		this.appendToMessage = function(string) {
 			this.myMessage += separator + string;
 			alertMessage();
@@ -61,7 +61,7 @@
 	
 	var secConstructor = new myConstructor("tom and jerry");
 	secConstructor.appendToMessage("this is a test!");
-	
+	*/
 	/**
 		1、由于私有和特权成员在函数内部，因此它们会被带到函数的每个实例中。(即构造函数的每个实例都包含同样的私有成员和特权成员的副本，因而实例越多，占用内存越多)
 		2、公有的原型成员是对象蓝图的一部分，适用于new关键字实例化的该对象的每个实例。
@@ -69,8 +69,16 @@
 		
 	**/
 	
+	String.prototype.repeat = function(m) {
+		return new Array(m + 1).join(this);
+	}
 	
-	
+	var arr = new Array();
+	arr[0] = '';
+	arr[1] = '';
+	arr[2] = '';
+	//join表示将数组元素连接到一起，如果带参数，说明会用参数分隔，创建了三个数组元素，都为空，用hello分隔，所以是两个hello
+	alert(arr.join("hello"));
 </script>
 </head>
 

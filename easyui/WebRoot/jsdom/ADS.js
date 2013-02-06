@@ -311,5 +311,46 @@
 		}
 	}
 	
+	//遍历每个节点的属性
+	function walkTheDOMWithAttributes(node,func,depth,returnedFromParent) {
+		var root = root || window.document;
+		returnedFromParent = func(root,depth++,returnedFromParent);
+		if(root.attributes) {
+			for ( var int = 0; int < root.attributes.length; int++) {
+				walkTheDOMWithAttributes(root.attribute[i], func, depth - 1, returnedFromParent);
+			}
+		}
+		
+		if(root.nodeType != ADS.node.ATTRIBUTES) {
+			node = root.firstChild;
+			while(node) {
+				walkTheDOMWithAttributes(node, func, depth, returnedFromParent);
+				node = node.nextSibling;
+			}
+		}
+	}
+	
+	//把word-word转换为wordWord
+	function camelize(s) {
+		return s.replace(/-(\w)/g, function(strMatch, p1) {
+			return p1.toUpperCase();
+		});
+	}
+	window['ADS']['camelize'] = camelize;
 	
 })();
+
+//在现在的ADS空间外面，添加两个方法
+//重复一个字符串
+if(!String.repeat) {
+	String.prototype.repeat = function(m) {
+		return new Array(m + 1).join(this);
+	}
+}
+
+//清除结尾和开头时的空白字符
+if(!String.trim) {
+	String.prototype.trim = function() {
+		return this.replace(/^\s + |\s+$/g,'');
+	}
+}
