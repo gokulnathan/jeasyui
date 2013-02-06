@@ -59,7 +59,7 @@ ADS.addEvent(window,'load',function() {
 
     ADS.addEvent(postalCode,'change',function(W3CEvent) {
 
-        var newPostalCode = this.value
+        var newPostalCode = this.value;
 
         if(!isPostalCode(newPostalCode)) return;
         
@@ -79,7 +79,7 @@ ADS.addEvent(window,'load',function() {
                     ADS.$('province').value = province;     
                 }
             }
-        }
+        };
         req.send();
 
     });
