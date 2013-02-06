@@ -160,7 +160,7 @@
 			//检测是否存在属性，如果是，则循环遍历这些属性，并使用processAttribute() 方法遍历它们的DOM树
 			if(this.attributes) {
 				for ( var int = 0; int < this.attributes.length; int++) {
-					ADS.walkTheDOMRecursive(processAttribute, this.attributes[i], tabCount, ref));
+					ADS.walkTheDOMRecursive(processAttribute, this.attributes[i], tabCount, ref);
 				}
 			}
 			

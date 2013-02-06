@@ -23,3 +23,28 @@ ADS.addEvent(window,'load',function(W3CEvent) {
 	ADS.addEvent(box,'mouseout',logit);
 	
 });
+
+/*
+ADS.addEvent(window, 'load', function(W3CEvent) {
+	function logit(W3CEvent) {
+		switch (this.nodeType) {
+		case ADS.node.DOCUMENT_TYPE:
+			ADS.log.write(W3CEvent.type + 'on the document');
+			break;
+		case ADS.node.ELEMENT_NODE:
+			ADS.log.write(W3CEvent.type + 'on the box');
+			break;
+		default:
+			break;
+		}
+	}
+	
+	ADS.addEvent(document, 'mouseover', logit);
+	ADS.addEvent(document, 'mouseover', logit);
+	ADS.addEvent(document, 'mouseout', logit);
+	
+	var box = document.getElementById('box');
+	ADS.addEvent(box, 'mouseover', logit);
+	ADS.addEvent(document, 'mouseover', logit);
+	ADS.addEvent(box, 'mouseout', logit);
+});*/

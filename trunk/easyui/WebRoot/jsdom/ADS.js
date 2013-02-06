@@ -329,4 +329,43 @@
 	
 	window['ADS']['log'] = new myLogger();//当作构造函数调用，生成对应实例。
 	
+	ADS.addEvent(window,'load', function() {
+		//创建一个图像元素
+		var image = document.createElement('IMG');
+		
+		//当图像载入后将其添加到文档主体
+		ADS.addEvent(image, 'load', function() {
+			document.body.appendChild(image);
+		});
+		
+		//如果载入出错则添加错误消息
+		ADS.addEvent(image, 'error', function() {
+			
+			var message = document.createTextNode('The image failed to load');
+			
+			document.body.appendChild(message);
+			
+		});
+		
+		//设置图像的src属性以便浏览器取得图像
+		image.setAttribute('src', 'http://advanceddomscripting.com/images/working.jpg');
+		
+		//除了下面这幅图像不存在而且会发生载入错误外，与外面都相同
+		var imageMissing = document.createElement('img');
+		ADS.addEvent(imageMissing, 'load', function() {
+			document.body.appendChild(imageMissing);
+		});
+		
+		ADS.addEvent(imageMissing, 'error', function() {
+			var message = document.createTextNode("imageMissing failed to load");
+			document.body.appendChild(message);
+		});
+		
+		//设置图像的src属性以便浏览器取得图像
+		imageMissing.setAttribute('src', 'http://advanceddomscripting.com/images/working.jpg');
+		
+	});
+	
+	
+	
 })();
