@@ -269,4 +269,47 @@
 	//当文档载入完成时修改具有特定标记的锚
 	ADS.addEvent(window, 'load', initMultiStateAnchors);
 	
+	//定义自己的节点类型
+	/*
+	 * 这里的node采用了小写类型，如果以后IE支持了Node对象，仍可以使用自己
+	 * 定义的。if(node.nodeType == ADS.node.ELEMENT_NODE){};
+	 */
+	window['ADS']['node'] {
+			ELEMENT_NODE :1,
+			ATTRIBUTE_NODE :2,
+			TEXT_NODE :3,
+			CDATA_SECTION_NODE :4,
+			ENTITY_REFERENCE_NODE :5,
+			ENTITY_NODE :6,
+			PROCESSING_INSTRUCTION_NODE :7,
+			COMMENT_NODE :8,
+			DOCUMENT_NODE :9,
+			DOCUMENT_TYPE_NODE :10,
+			DOCUMENT_FRAGMENT_NODE :11,
+			NOTATION_NODE :12
+			
+	};
+	
+	//遍历所有的节点
+	function walkElementsLinear(func, node) {
+		var root = node || window.document;
+		var nodes = root.getElementsByTagName("*");
+		for ( var int = 0; int < nodes.length; int++) {
+			//每个节点循环调用传入的方法，对象冒充，继承机制原理。
+			func.call(node[i]);
+		}
+	}
+	
+	//递归遍历
+	function walkTheDOMRecursive(func,node,depth,returnedFromParent) {
+		var root = root || window.document;
+		var returnedFromParent = func.call(root,depth++,returnedFromParent);
+		var node = root.firstChild;
+		while(node) {
+			walkTheDOMRecursive(func, node,depth, returnedFromParent);
+			node = node.nextSibling;
+		}
+	}
+	
+	
 })();
