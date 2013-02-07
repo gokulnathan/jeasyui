@@ -684,5 +684,30 @@
 	}
 	window['ADS']['removeClassName'] = removeClassName;
 	
+	//新增样式表
+	function addStyleSheet(url, media) {
+		media = media ||'screen';
+		var link = document.creatElement('LINK');
+		link.setAttribute('rel','stylesheet');
+		link.setAttribute('type','text/css');
+		link.setAttribute('href',url);
+		link.setAttribute('media',media);
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
+	window['ADS']['addStyleSheet'] = removeClassName;
+	
+	//移除样式表
+	function removeStyleSheet(url, media) {
+		var styles = getStyleSheets(url,media);
+		for ( var i = 0; i < styles.length; i++) {
+			var node = styles[i].ownerNode || styles[i].owningElement;
+			//禁用样式表
+			styles[i].disabled = true;
+			//移除节点
+			node.parentNode.removeChild(node);
+		}
+	}
+	window['ADS']['removeStyleSheet'] = removeClassName;
+	
 	
 })();
