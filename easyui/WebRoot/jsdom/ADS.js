@@ -455,7 +455,7 @@
 	window['ADS']['addLoadEvent'] = addLoadEvent;
 	
 	//获得事件对象
-	function getEventObject(W3CEvent]) {
+	function getEventObject(W3CEvent) {
 		return W3CEvent || window.event;
 	}
 	window['ADS']['getEventObject'] = getEventObject;
@@ -572,6 +572,117 @@
 	
 	window['ADS']['getKeyPressed'] = getKeyPressed;
 	
+	//通过ID修改某个元素的样式
+	function setStyleById(element, styles) {
+		//取得对象的引用
+		if(!(element = $(element))) {
+			return false;
+		}
+		//循环遍历styles对象并应用每个属性
+		for ( var property in styles) {
+			if(!styles.hasOwnProperty(property)) {
+				continue;
+			}
+			
+			if(element.style.setProperty) {
+				//DOM2样式规范方法
+				element.style.setProperty(uncamelize(property,'-'), styles[property], null);
+			} else {
+				//备用方法
+				element.style[camelize(property)] = styles[property];
+			}
+		}
+		return true;
+	}
+	
+	window['ADS']['setStyle'] = setStyleById;
+	window['ADS']['setStyleById'] = setStyleById;
+	
+	//通过类名修改多个元素的样式
+	function setStylesByClassName(parent, tag, className, styles) {
+		if(!(parent = $(parent))) {
+			return false;
+		}
+		
+		var elements = getElementsByClassName(className, tag, parent);
+		for ( var e = 0; e < elements.length; e++) {
+			setStyleById(elements[e], styles);
+		}
+		
+		return true;
+		
+	}
+	
+	window['ADS']['setStylesByClassName'] = setStylesByClassName;
+	
+	//通过标签名修改多个元素的样式
+	function setStylesByTagName(tagname, styles, parent) {
+		parent = $(parent) || document;
+		var elements = parent.getElementsByTagName(tagname);
+		for ( var e = 0; e < elements.length; e++) {
+			setStyleById(elements[e], styles);
+		}
+	}
+	
+	window['ADS']['setStylesByTagName'] = setStylesByTagName;
+	
+	//取得包含元素类名的数组
+	function getClassNames(element) {
+		if(!(element = $(element))) {
+			return false;
+		}
+		//用一个空格替换多个空格，然后用空格分割类名
+		return element.className.replace(/\s + /, ' ').split(' ');
+	}
+
+	window['ADS']['getClassNames'] = getClassNames;
+	
+	//检查元素中是否存在某个类
+	function hasClassName(element, className) {
+		if(!(element = $(element))) {
+			return false;
+		}
+		
+		var classes = getClassNames(element);
+		
+		for ( var i = 0; i < classes.length; i++) {
+			//检查className是否匹配，如果是则返回true
+			if(classes[i] === className) {
+				return true;
+			}
+		}
+		return false;
+	}
+	window['ADS']['hasClassName'] = hasClassName;
+	
+	//为元素添加类
+	function addClassName(element, className) {
+		if(!(element = $(element))) {
+			return false;
+		}
+		//将类名添加到当前className的末尾，如果没有className,则不包含空格
+		element.className += (element.className ? ' ':'') + className;
+		return true;
+	}
+	window['ADS']['addClassName'] = addClassName;
+	
+	//从元素中删除类
+	function removeClassName(element, className) {
+		if(!(element = $(element))) {
+			return false;
+		}
+		var classes = getClassNames(element);
+		var length = classes.length;
+		//循环遍历数组删除匹配的项，因为从数组中删除项会使数组变短，所以要反向循环
+		for ( var i = length -1; i >= 0 ; i--) {
+			if(classes[i] === className) {
+				delete(clases[i]);
+			}
+		}
+		element.className = classes.join(' ');
+		return (length == classes.length ? false : true);
+	}
+	window['ADS']['removeClassName'] = removeClassName;
 	
 	
 })();
