@@ -10,7 +10,8 @@ ADS.addEvent(window,'load',function() {
             // add event in Chapter 1 to eable capturing rather than
             // bubbling.
             obj.addEventListener( type, fn, true );
-
+            
+			
         } else if ( obj.attachEvent ) {
             //The Microsoft Way
             obj['e'+type+fn] = fn;
@@ -39,3 +40,29 @@ ADS.addEvent(window,'load',function() {
     }
     
 });
+
+/*ADS.addEvent(window,'load', function() {
+	function modifiedAddEvent(type, fn ,true) {
+		if(obj.addEventListener) {
+			
+			obj.addEventListener(type, fn ,true);
+		} else if (obj.attachEvent) {
+			obj['e' + type + fn] = fn;
+			obj[type + fn] = function() {
+				obj['e' + type + fn](window.event);
+			}
+			obj.attachEvent('on' + type , obj[type+fn]);
+		} else {
+			return false;
+		}
+	} 
+	var counter = 0;
+	var lists = document.getElementsByTagName('ul');
+	for ( var int = 0; int < lists.length; int++) {
+		modifiedAddEvent(list[i], 'click', function() {
+			var append = document.createTextNode(':' + counter ++);
+			this.getElementsByTagName('p')[0].appendChild(append);
+			this.className = 'clicked';
+		});
+	}
+});*/
