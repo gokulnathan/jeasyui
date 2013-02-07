@@ -64,11 +64,12 @@ ADS.addEvent(window,'load',function() {
         if(!isPostalCode(newPostalCode)) return;
         
         var req = new XMLHttpRequest();
+        
         req.open('POST', 'server.js?postalCode=' + newPostalCode, true);
         req.onreadystatechange = function() {
             if (req.readyState == 4) {
                 eval(req.responseText);
-                
+                alert("aa="+street);
                 if(ADS.$('street').value == '') {
                     ADS.$('street').value = street;
                 }
