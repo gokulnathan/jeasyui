@@ -37,7 +37,4 @@ public class TestAspect {
         System.out.println(ex.getMessage());
     }
 
-    private void sendEx(String ex) {
-        //TODO ���Ͷ��Ż��ʼ�����
-    }
 } 
