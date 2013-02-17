@@ -44,29 +44,31 @@
         </property> 
     </bean> 
      -->
+     
+     <!--  
     <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 	   <property name="jndiName">
 	   	<value>java:comp/env/anbang</value>
 	   </property>
   	</bean>
-
-    <!-- transaction manager, use JtaTransactionManager for global tx -->
+-->
+    <!-- transaction manager, use JtaTransactionManager for global tx 
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource" />
     </bean>
-
-    <!-- enable component scanning (beware that this does not enable mapper scanning!) -->    
+-->
+    <!-- enable component scanning (beware that this does not enable mapper scanning!) -->   
     <context:component-scan base-package="
-    com.anbang.finalAccount.ledger
+    com.spring.service,com.spring.aop
     " />
-
+ 
     <!-- enable autowire -->
     <context:annotation-config />
 
-    <!-- enable transaction demarcation with annotations -->
+    <!-- enable transaction demarcation with annotations 
     <tx:annotation-driven />
-
-    <!-- define the SqlSessionFactory -->
+-->
+    <!-- define the SqlSessionFactory 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
     </bean>
@@ -74,11 +76,29 @@
 	  <constructor-arg index="0" ref="sqlSessionFactory" />
 	  <constructor-arg index="1" value="BATCH" />
 	</bean>
-
+-->
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="
-   			com.anbang.finalAccount.ledger
+   			com.spring.service,com.spring.aop
    		" />
     </bean>
+    
+    <aop:config>  
+        <aop:aspect id="TestAspect" ref="aspectBean">  
+            <!--配置com.spring.service包下所有类或接口的所有方法-->  
+            <aop:pointcut id="businessService"  
+                expression="execution(* com.spring.service.*.*(..))" />  
+            <aop:before pointcut-ref="businessService" method="doBefore"/>  
+            <aop:after pointcut-ref="businessService" method="doAfter"/>  
+            <aop:around pointcut-ref="businessService" method="doAround"/>  
+            <aop:after-throwing pointcut-ref="businessService" method="doThrowing" throwing="ex"/>  
+        </aop:aspect>  
+    </aop:config>  
+      
+    <bean id="aspectBean" class="com.spring.aop.TestAspect" />  
+    <bean id="aService" class="com.spring.service.AServiceImpl"></bean>  
+    <bean id="bService" class="com.spring.service.BServiceImpl"></bean>  
+    
+    
 </beans>
