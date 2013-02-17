@@ -1,9 +1,11 @@
 package com.spring.aop;
 
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Component;
 
 /**
- * ÇÐÃæ
+ * ï¿½ï¿½ï¿½ï¿½
  *
  */
 @Component
@@ -36,6 +38,6 @@ public class TestAspect {
     }
 
     private void sendEx(String ex) {
-        //TODO ·¢ËÍ¶ÌÐÅ»òÓÊ¼þÌáÐÑ
+        //TODO ï¿½ï¿½ï¿½Í¶ï¿½ï¿½Å»ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½
     }
 } 
