@@ -1,18 +1,19 @@
 package com.spring.test;
 
+import junit.framework.TestCase;
 
-
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.spring.service.AService;
 import com.spring.service.BServiceImpl;
 
 
-
-public class AOPTest extends  {
-	
+@Component
+public class AOPTest extends TestCase {
+	@Autowired
 	private AService aService;
-	
+	@Autowired
 	private BServiceImpl bService;
 	
 	protected String[] getConfigLocations() {
@@ -26,6 +27,7 @@ public class AOPTest extends  {
 	 */
 	public void testCall()
 	{
+		
 		System.out.println("SpringTest JUnit test");
 		aService.fooA("JUnit test fooA");
 		aService.barA();
@@ -54,10 +56,4 @@ public class AOPTest extends  {
 	}
 
 
-	@Override
-	protected ConfigurableApplicationContext loadContext(Object arg0)
-			throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
