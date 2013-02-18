@@ -5,8 +5,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.stereotype.Component;
 
 /**
- * ����
- *
+ * 
+ *切面类
  */
 @Component
 public class TestAspect {
