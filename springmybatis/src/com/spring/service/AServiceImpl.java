@@ -3,7 +3,7 @@ package com.spring.service;
 import org.springframework.stereotype.Service;
 
 /**
- *接口A的实现类
+ *
  */
 @Service
 public class AServiceImpl implements AService {
