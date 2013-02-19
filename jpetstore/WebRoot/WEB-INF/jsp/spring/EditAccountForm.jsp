@@ -52,7 +52,6 @@ Repeat password:</td><td>
 <input border="0" type="image" src="../images/button_submit.gif" name="submit" value="Save Account Information" />
 </center>
 
-</html:form>
 <p>
 <center><b><a href="<c:url value="/shop/listOrders.do"/>">My Orders</a></b></center>
 
