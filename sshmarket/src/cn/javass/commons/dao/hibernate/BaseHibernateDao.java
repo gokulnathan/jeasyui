@@ -2,8 +2,13 @@ package cn.javass.commons.dao.hibernate;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
+import java.sql.SQLException;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import cn.javass.commons.dao.IBaseDao;
@@ -52,33 +57,76 @@ public abstract class BaseHibernateDao<M extends Serializable, PK extends Serial
 	@Override
 	public void update(M model) {
 
+		this.getHibernateTemplate().update(model);
 	}
 
 	@Override
 	public void merge(M model) {
 
+		this.getHibernateTemplate().merge(model);
 	}
 
 	@Override
 	public void delete(PK id) {
 
+		this.getHibernateTemplate().delete(this.get(id));
 	}
 
 	@Override
 	public M get(PK id) {
 
-		return null;
+		return this.getHibernateTemplate().get(this.entityClass, id);
 	}
 
 	@Override
 	public int countAll() {
 
-		return 0;
+		Number total = unique(getCouhtAllSql());
+		return total.intValue();
+	}
+
+	/**
+	 * 根据查询条件返回唯一记录
+	 * @param couhtAllSql
+	 * 查询语句
+	 * @param <T> 
+	 * 返回类型
+	 * @return
+	 */
+	private <T> T unique(final String hql, final Object...paramList) {
+		return getHibernateTemplate().execute(new HibernateCallback<T>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public T doInHibernate(Session session) throws HibernateException,
+					SQLException {
+				Query query = session.createQuery(hql);
+				
+				if(paramList != null) {
+					for (int i = 0; i < paramList.length; i++) {
+						query.setParameter(i, paramList[i]);
+					}
+				}
+				
+				return (T) query.setMaxResults(1).uniqueResult();
+			}});
+	}
+
+	/**
+	 * 获得查询SQL 
+	 * SELECT COUNT(*) FROM + entityName
+	 * @return
+	 */
+	private String getCouhtAllSql() {
+		return getHQL_COUNT_ALL();
 	}
 
 	@Override
 	public List<M> listAll() {
 
+		return list(getHQL_LIST_ALL());
+	}
+
+	private List<M> list(String hql_LIST_ALL2) {
 		return null;
 	}
 
