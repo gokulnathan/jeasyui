@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="sshmarket"
+  id="myeclipse.1362721951908"
+  context-root="/sshmarket"
+  j2ee-spec="6.0"
+  archive="sshmarket.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
