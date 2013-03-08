@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import cn.javass.commons.dao.IBaseDao;
+import cn.javass.commons.pagination.PageUtil;
 
 public abstract class BaseHibernateDao<M extends Serializable, PK extends Serializable>
 		extends HibernateDaoSupport implements IBaseDao<M, PK> {
@@ -120,20 +121,55 @@ public abstract class BaseHibernateDao<M extends Serializable, PK extends Serial
 		return getHQL_COUNT_ALL();
 	}
 
+	/**
+	 * 查询所有的记录
+	 */
 	@Override
 	public List<M> listAll() {
 
 		return list(getHQL_LIST_ALL());
 	}
 
-	private List<M> list(String hql_LIST_ALL2) {
-		return null;
+	private List<M> list(final String sql, final Object...paramList) {
+		return list(sql, -1,-1,paramList);
 	}
 
 	@Override
 	public List<M> listAll(int pn, int pageSize) {
 
-		return null;
+		return list(getHQL_LIST_ALL(), pn, pageSize);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected <T> List<T> list(final String sql, final int pn, final int pageSize, final Object...paramList) {
+		
+		
+		return getHibernateTemplate().executeFind(new HibernateCallback<List<T>>() {
+
+			@Override
+			public List<T> doInHibernate(Session session)
+					throws HibernateException, SQLException {
+				Query query = session.createQuery(sql);
+				
+				if(paramList != null) {
+					for (int i = 0; i < paramList.length; i++) {
+						query.setParameter(i, paramList[i]);//设置占位符参数
+					}
+				}
+				
+				//分页处理
+				if(pn > -1 && pageSize > -1) {
+					query.setMaxResults(pageSize);//设置每页获取的最大记录数。
+					int start = PageUtil.getPageStart(pn, pageSize);//某页从哪一条开始
+					if(start != 0) {
+						query.setFirstResult(start);//设置记录开始的地方
+					}
+				}
+				
+				return query.list();
+			}
+			
+		});
 	}
 
 	/**
