@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>sshmarket</groupId>
 	<artifactId>sshmarket</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version> 
 	<packaging>war</packaging>
 	<name />
 	<description />
@@ -33,6 +33,19 @@
 	</properties>
 	<!-- 添加依赖，END -->
 	<dependencies>
+	<dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.1</version>
+      <scope>provided</scope>
+    </dependency>
+	
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>bean-validator</artifactId>
@@ -278,36 +291,36 @@
 
 		<!-- 添加STRUTS2依赖 BEGIN -->
 		<dependency>
-		<!-- 包括struts2-core.jar 和xwork-core2 -->
+			<!-- 包括struts2-core.jar 和xwork-core2 -->
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-core</artifactId>
 			<version>${org.apache.struts.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>freemarker</groupId>
 			<artifactId>freemarker</artifactId>
 			<version>2.3.8</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>ognl</groupId>
 			<artifactId>ognl</artifactId>
 			<version>3.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.struts</groupId>
 			<artifactId>struts2-spring-plugin</artifactId>
 			<version>${org.apache.struts.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.2</version>
 		</dependency>
-		
+
 		<!-- 添加STRUTS2依赖 END -->
 
 		<!-- 添加hibernate依赖 begin -->
