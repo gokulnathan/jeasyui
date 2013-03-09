@@ -12,7 +12,7 @@ import cn.javass.commons.pagination.Page;
  * @param <M>
  * @param <PK>
  */
-public interface IBaseServic<M extends Serializable, PK extends Serializable> {
+public interface IBaseService<M extends Serializable, PK extends Serializable> {
 
 	public M save(M model);//保存模型对象
 	
