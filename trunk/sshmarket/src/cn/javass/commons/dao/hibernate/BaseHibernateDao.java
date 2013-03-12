@@ -94,7 +94,7 @@ public abstract class BaseHibernateDao<M extends Serializable, PK extends Serial
 	 * 返回类型
 	 * @return
 	 */
-	private <T> T unique(final String hql, final Object...paramList) {
+	protected <T> T unique(final String hql, final Object...paramList) {
 		return getHibernateTemplate().execute(new HibernateCallback<T>() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -130,7 +130,7 @@ public abstract class BaseHibernateDao<M extends Serializable, PK extends Serial
 		return list(getHQL_LIST_ALL());
 	}
 
-	private List<M> list(final String sql, final Object...paramList) {
+	public List<M> list(final String sql, final Object...paramList) {
 		return list(sql, -1,-1,paramList);
 	}
 
