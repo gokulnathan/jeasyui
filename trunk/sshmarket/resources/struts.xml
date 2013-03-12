@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 由于是要集成Spring，因此需要使用StrutsSpringObjectFactory，我们需要在action名字中出现“/”.
+	因此定义struts.enable.SlashesInActionNames=true。在此还定义了“custom-default”包继承struts-default包，
+	且是抽象的，在包里定义了如全局结果集全局异常映射。
+	 -->
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory"></constant>
+	
+	<!-- 允许ACTION的名字中出现"/" -->
+	<constant name="struts.enable.SlashesInActionNames" value="true"></constant>
+	
+	<package name="custom-default" extends="struts-default" abstract="true">
+		<global-results>
+			<result name="success">/WEB-INF/jsp/common/success.jsp</result>
+			<result name="error">/WEB-INF/jsp/common/error.jsp</result>
+			<result name="exception">/WEB-INF/jsp/common/error.jsp</result>
+		</global-results>
+		
+		<global-exception-mappings>
+			<exception-mapping result="exception" exception="java.lang.Throwable"></exception-mapping>
+		</global-exception-mappings>
+	</package>
+	
+	<package name="front" extends="custom-default" >
+		<action name="*/*" class="/front/{1}Action" method="{2}">
+			<result name="redirect" type="redirect">/{1}/list.action</result>
+			<result name="list">/WEB-INF/jsp/front/{1}/list.jsp</result>
+			<result name="add">/WEB-INF/jsp/front/{1}/add.jsp</result>
+			<result name="update">/WEB-INF/jsp/front/{1}/update.jsp</result>
+			<result name="delete">/WEB-INF/jsp/front/{1}/delete.jsp</result>
+			<result name="buyResult">/WEB-INF/jsp/front/{1}/buyResult.jsp</result>
+		</action>
+	</package>
+	
+	<package name="admin" extends="custom-default" >
+		<action name="*/*" class="/"admin"/{1}Action" method="{2}">
+			<result name="redirect" type="redirect">/{1}/list.action</result>
+			<result name="list">/WEB-INF/jsp/admin/{1}/list.jsp</result>
+			<result name="add">/WEB-INF/jsp/admin/{1}/add.jsp</result>
+			<result name="update">/WEB-INF/jsp/admin/{1}/update.jsp</result>
+			<result name="delete">/WEB-INF/jsp/admin/{1}/delete.jsp</result>
+		</action>
+	</package>
+	
+</struts>    
