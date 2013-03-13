@@ -5,6 +5,75 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
 	http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
   <display-name></display-name>	
+  <!-- 定义如通用的集成配置、设置web环境上下文过滤器、字符过滤器（防止乱码）、
+  	通用的Web框架拦截器（如Struts2的）等等，从而可以通过拷贝复用。 -->
+  	
+  <!-- 通用配置开始 -->
+  <context-param>
+  	<param-name>contextClass</param-name>
+  	<param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>
+  		classpath:applicationContext-resources.xml,
+        classpath:cn/javass/point/dao/applicationContext-hibernate.xml,
+        classpath:cn/javass/point/service/applicationContext-service.xml,
+        classpath:cn/javass/point/web/sshmarket-admin-servlet.xml,
+        classpath:cn/javass/point/web/sshmarket-front-servlet.xml
+  	</param-value>
+  </context-param>
+  
+  <!-- spring listener -->
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <!-- 通用配置结束-->
+  
+  <!-- 设置web环境上下文(方便JSP页面获取，在FILTER处理) BGN -->
+  <filter>
+  	<filter-name>Set Context Path</filter-name>
+  	<filter-class>cn.javass.commons.web.filter.ContextPathFilter</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>Set Context Path</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- 设置web环境上下文(方便JSP页面获取，在FILTER处理) -->
+  
+  <!-- 字符过滤编码  BGN-->
+  <filter>
+  	<filter-name>Set Character Encoding</filter-name>
+  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  	<init-param>
+  		<param-name>encoding</param-name>
+  		<param-value>UTF-8</param-value>
+  	</init-param>
+  	<init-param>
+  		<param-name>forceEncoding</param-name>
+  		<param-value>true</param-value>
+  	</init-param>
+  </filter>
+  <filter-mapping>
+  	<filter-name>Set Character Encoding</filter-name>
+  	<url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- 字符过滤编码  END-->
+  
+  <!-- Struts2.x 前端控制器 BGN -->
+  	<filter>
+  		<filter-name>struts2Filter</filter-name>
+  		<filter-class>org.apache.struts2.dispatcher.FilterDispatcher</filter-class>	
+  	</filter>
+  	<filter-mapping>
+  		<filter-name>struts2Filter</filter-name>
+  		<url-pattern>*.action</url-pattern>
+  	</filter-mapping>
+  <!-- Struts2.x 前端控制器 END -->
+  
+  
+  
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
