@@ -14,6 +14,8 @@ public final class Constants {
 	/**通用的上下文路径，在FILTER中设置，可以在任何页面调用*/
 	public static final String CONTEXT_PATH = "ctx";
 	
+	public static final String PN = "pn";
+	
 	
 
 }
