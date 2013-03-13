@@ -2,10 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
        http://www.springframework.org/schema/beans 
-       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-    
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">    
     <!-- 占位符，读取配置文件。 -->
-   <bean class="org.springframework.beans.factory.config.PlaceholderConfigurerSupport">
+   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
    	<property name="locations">
    		<list>
    			<value>classpath:resources.properties</value>
@@ -15,9 +14,9 @@
    
    <!-- 数据源 -->
    <bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
-   		<property name="targetDataSource">
-   			<bean class="org.logicalcobwebs.proxool.ProxoolDataSource">
-   				<property name="driver" value="${db.driver.class}" />
+        <property name="targetDataSource">
+            <bean class="org.logicalcobwebs.proxool.ProxoolDataSource">
+                <property name="driver" value="${db.driver.class}" />
                 <property name="driverUrl" value="${db.url}" />
                 <property name="user" value="${db.username}" />
                 <property name="password" value="${db.password}" />
@@ -26,8 +25,8 @@
                 <property name="statistics" value="${proxool.statistics}" />
                 <property name="simultaneousBuildThrottle" value="${proxool.simultaneousBuildThrottle}" />
                 <property name="trace" value="${proxool.trace}" />
-   			</bean>
-   		</property>
-   	</bean>
+            </bean>
+        </property>
+    </bean>
    
 </beans>

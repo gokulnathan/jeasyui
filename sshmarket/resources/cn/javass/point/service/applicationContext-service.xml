@@ -30,17 +30,17 @@
     	</tx:attributes>
     </tx:advice>
     
-    <aop:config>
-    	<aop:pointcut expression="execution(* cn.javass.point.service.*.*(..))" id="txPointCut" />
-    	<aop:advisor advice-ref="txAdvice" pointcut-ref="txPointCut"/>
-    </aop:config>
+     <aop:config>
+        <aop:pointcut id="txPointcut" expression="execution(* cn.javass.point.service.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
+    </aop:config>  
     
     <bean id="goodsService" class="cn.javass.point.service.impl.GoodsServiceImpl">
-    	<property name="dao" ref="goodsDao"></property>
+    	<property name="baseDao" ref="goodsDao"></property>
     </bean>
     
     <bean id="goodsCodeService" class="cn.javass.point.service.impl.GoodsCodeServiceImpl">
-    	<property name="dao" ref="goodsCodeDao"></property>
+    	<property name="baseDao" ref="goodsCodeDao"></property>
     	<property name="goodsService" ref="goodsService"></property>
     </bean>
 
