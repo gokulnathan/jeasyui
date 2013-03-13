@@ -20,7 +20,7 @@ public class BaseAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 
 	/** 通用结果 **/
-	public static final String List = "result";
+	public static final String LIST = "result";
 
 	public static final String REDIRECT = "redirect";
 
