@@ -36,7 +36,7 @@
 	</package>
 	
 	<package name="admin" extends="custom-default" >
-		<action name="*/*" class="/"admin"/{1}Action" method="{2}">
+		<action name="*/*" class="/admin/{1}Action" method="{2}">
 			<result name="redirect" type="redirect">/{1}/list.action</result>
 			<result name="list">/WEB-INF/jsp/admin/{1}/list.jsp</result>
 			<result name="add">/WEB-INF/jsp/admin/{1}/add.jsp</result>
