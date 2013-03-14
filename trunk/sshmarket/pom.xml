@@ -269,6 +269,53 @@
 
 		<!-- 添加spring依赖 end -->
 
+		<!-- 添加aspectjweaver依赖 bgn -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.12</version>
+		</dependency>
+		<!-- 添加aspectjweaver依赖 end -->
+
+		<!-- proxool public void setHouseKeepingSleepTime(int houseKeepingSleepTime) {
+        this.houseKeepingSleepTime = houseKeepingSleepTime;
+        } 方法不对，参数类型为long-->
+		<dependency>
+			<groupId>org.logicalcobwebs.proxool</groupId>
+			<artifactId>proxool</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.logicalcobwebs.proxool</groupId>
+			<artifactId>proxool-cglib</artifactId>
+			<version>0.9.1</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- 添加proxool依赖 end -->
+
+		<!-- ==============dbcp数据库连接池 =================== -->
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+		<!-- cglib字节码解释器 -->
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+
+		<!-- ==============c3p0数据库连接池 =================== -->
+		<dependency>
+			<groupId>c3p0</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>0.9.1.2</version>
+		</dependency>
+
 		<!-- 添加mysql依赖 begin -->
 		<dependency>
 			<groupId>mysql</groupId>
